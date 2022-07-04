@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "483147210838",
+    "firebase_url": "https://ecom-73344-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ecom-73344",
+    "storage_bucket": "ecom-73344.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483147210838:android:fa8a916cd2cc4e6cf89bf7",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce_midterm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "483147210838-nblicdi4jafu779m920gh3tvqh2e0tm4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu_it7A9vzI2LjJa_zulSe4AEjo3d37wM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "483147210838-nblicdi4jafu779m920gh3tvqh2e0tm4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "483147210838-din97hjsodjl5vs03tabbr3ikv1t3pee.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ecommerceMidterm"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
