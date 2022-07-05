@@ -16,8 +16,6 @@ class ItemDetail extends StatelessWidget {
           Container(
             width: double.infinity,
             height: double.infinity,
-            color: Colors.blue,
-            child: const Center(child: Text('itemdetail')),
           ),
           Positioned(
             child: Container(
