@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 
-enum HomeTabItem { home, category, history, account }
+enum HomeTabItem { home, category, cart, account }
 
 class HomeViewModel extends ChangeNotifier {
   HomeTabItem selectedTabItem = HomeTabItem.home;
@@ -12,7 +12,7 @@ class HomeViewModel extends ChangeNotifier {
   List<HomeTabItem> homeTabItems = [
     HomeTabItem.home,
     HomeTabItem.category,
-    HomeTabItem.history,
+    HomeTabItem.cart,
     HomeTabItem.account,
   ];
 
@@ -39,8 +39,8 @@ class HomeViewModel extends ChangeNotifier {
         return "Home";
       case HomeTabItem.category:
         return "Category";
-      case HomeTabItem.history:
-        return "History";
+      case HomeTabItem.cart:
+        return "My Cart";
       case HomeTabItem.account:
         return "Account";
       default:
@@ -54,8 +54,8 @@ class HomeViewModel extends ChangeNotifier {
         return const Icon(Icons.home);
       case HomeTabItem.category:
         return const Icon(Icons.store);
-      case HomeTabItem.history:
-        return const Icon(Icons.history);
+      case HomeTabItem.cart:
+        return const Icon(Icons.shopping_cart);
       case HomeTabItem.account:
         return const Icon(Icons.person);
       default:

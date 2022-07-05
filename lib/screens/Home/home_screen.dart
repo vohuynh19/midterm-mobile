@@ -11,6 +11,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../components/HorizontalList.dart';
+import '../components/VerticalList.dart';
+
 const dataArr = [
   {"title": "Đồ Ăn Vặt", "src": ""},
   {"title": "Đồ uống", "src": ""},
@@ -22,58 +25,6 @@ const bannerSrcArr = [
   'assets/images/banner/1.jpeg',
   'assets/images/banner/2.png',
   'assets/images/banner/3.jpeg'
-];
-
-const foodArrData = [
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7500.0
-  },
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7000.0
-  },
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7000.0
-  },
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7000.0
-  },
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7000.0
-  },
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7000.0
-  },
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7000.0
-  },
 ];
 
 class HomeScreen extends StatefulWidget {
@@ -94,6 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+
     return SafeArea(
       child: Container(
         color: Theme.of(context).backgroundColor,
@@ -104,25 +57,55 @@ class _HomeScreenState extends State<HomeScreen> {
               return const Center(child: CircularProgressIndicator());
             }
             if (!snapshot.hasData) {
-              return Center(child: Text('noData'));
+              return const Center(child: Text('noData'));
             }
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
-                  expandedHeight: 50,
-                  backgroundColor: ColorConstant.primaryColor,
-                  flexibleSpace: FlexibleSpaceBar(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Giao hang den',
-                          style: TextStyleConstant.normalSmallText,
+                  expandedHeight: 60,
+                  backgroundColor: ColorConstant.lightColor,
+                  flexibleSpace: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: InkWell(
+                      onTap: () => {},
+                      child: SingleChildScrollView(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  'Giao hàng đến',
+                                  style: TextStyleConstant.normalLargeText
+                                      .setColor(ColorConstant.textColor)
+                                      .bold,
+                                ),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.map,
+                                      color: ColorConstant.textColor,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text('86 Tản Đà, P11, Quận 5')
+                                  ],
+                                )
+                              ],
+                            ),
+                            const Icon(Icons.keyboard_double_arrow_left,
+                                color: ColorConstant.textColor, size: 32),
+                          ],
                         ),
-                        Row(
-                          children: const [Icon(Icons.map), Text('86 Tan Da')],
-                        )
-                      ],
+                      ),
                     ),
                   ),
                   floating: true,
@@ -130,43 +113,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 SliverList(
                   delegate: SliverChildListDelegate([
                     const SizedBox(
-                      height: 8,
-                    ),
-                    SizedBox(
-                      height: 40,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                style: BorderStyle.none,
-                              ),
-                            ),
-                            isDense: true,
-                            suffixIcon: const Icon(
-                              Icons.search,
-                              color: ColorConstant.textColor,
-                              size: 24,
-                            ),
-                            focusColor: ColorConstant.primaryColor,
-                            fillColor: ColorConstant.lightColor,
-                            filled: true,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 24,
+                      height: 16,
                     ),
                     CarouselSlider(
-                      options: CarouselOptions(height: 160),
+                      options: CarouselOptions(
+                          height: 200, autoPlay: true, viewportFraction: 1),
                       items: bannerSrcArr.map((i) {
                         return Builder(
                           builder: (BuildContext ctx) {
                             return Container(
-                              width: MediaQuery.of(context).size.width,
+                              width: width,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15.0),
                                 image: DecorationImage(
@@ -192,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyleConstant.normalxxLargeText.bold,
                       ),
                     ),
-                    const HorizontalScrollItemList(),
+                    const HorizontalList(),
                     const SizedBox(
                       height: 24,
                     ),
@@ -203,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyleConstant.normalxxLargeText.bold,
                       ),
                     ),
-                    const HorizontalScrollItemList(),
+                    const HorizontalList(),
                     const SizedBox(
                       height: 24,
                     ),
@@ -214,152 +172,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyleConstant.normalxxLargeText.bold,
                       ),
                     ),
-                    const HorizontalScrollItemList(),
+                    const HorizontalList(),
                   ]),
                 ),
               ],
             );
           },
-        ),
-      ),
-    );
-  }
-}
-
-class HorizontalScrollItemList extends StatelessWidget {
-  const HorizontalScrollItemList({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 290,
-      width: double.infinity,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          ...foodArrData.map((e) => HorizontalScrollItem(
-                desc: e['desc'] as String,
-                title: e['title'] as String,
-                src: e['src'] as String,
-                rateCounter: e['rateCounter'] as double,
-                price: e['price'] as double,
-              )),
-          const ViewMore(
-            type: 'kho',
-          )
-          // HorizontalScrollItem(),
-          // HorizontalScrollItem(),
-        ],
-      ),
-    );
-  }
-}
-
-class HorizontalScrollItem extends StatelessWidget {
-  final String src;
-  final String title;
-  final String desc;
-  final double rateCounter;
-  final double price;
-
-  const HorizontalScrollItem(
-      {Key? key,
-      required this.src,
-      required this.title,
-      required this.desc,
-      required this.rateCounter,
-      required this.price})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(8),
-      height: 290,
-      width: 160,
-      decoration: BoxDecoration(
-          color: ColorConstant.lightColor,
-          borderRadius: BorderRadius.circular(8)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 160,
-            height: 160,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(src),
-              colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.1), BlendMode.softLight),
-            )),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          Text(
-            title,
-            style: TextStyleConstant.normalLargeText.semiBold,
-          ),
-          Text(
-            desc,
-            style: TextStyleConstant.normalxSmallText,
-          ),
-          Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '${price.formatCurrency()} đ',
-                style: TextStyleConstant.normalxxLargeText
-                    .setColor(ColorConstant.primaryColor)
-                    .semiBold,
-              ),
-              SizedBox(
-                height: 24,
-                width: 24,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(EdgeInsets.zero),
-                  ),
-                  onPressed: () => {},
-                  child: const Icon(
-                    Icons.add,
-                    size: 20,
-                  ),
-                ),
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class ViewMore extends StatelessWidget {
-  final String type;
-
-  const ViewMore({
-    Key? key,
-    required this.type,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: 100,
-        width: 100,
-        child: Column(
-          children: [
-            ElevatedButton(
-              child: Icon(Icons.next_plan),
-              onPressed: () {},
-            ),
-            Text('Xem them')
-          ],
         ),
       ),
     );
