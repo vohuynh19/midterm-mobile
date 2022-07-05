@@ -1,6 +1,7 @@
 import 'package:ecommerce_midterm/screens/Auth/account_screen.dart';
 import 'package:ecommerce_midterm/screens/Auth/login_screen.dart';
 import 'package:ecommerce_midterm/screens/Cart/cart_screen.dart';
+import 'package:ecommerce_midterm/screens/Cart/detail_screen.dart';
 import 'package:ecommerce_midterm/screens/History/history_screen.dart';
 import 'package:ecommerce_midterm/screens/Home/tabbar_screen.dart';
 import 'package:ecommerce_midterm/utils/themes.dart';
@@ -60,7 +61,14 @@ class _MyAppState extends State<MyApp> {
         '/login': (context) => const LoginScreen(),
         '/cart': (context) => const CartScreen(),
         '/history': (context) => const HistoryScreen(),
-        '/account': (context) => const AccountScreen()
+        '/account': (context) => const AccountScreen(),
+        '/detail-cart': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return DetailScreen(
+            cartInfo: args,
+          );
+        }
       },
     );
   }

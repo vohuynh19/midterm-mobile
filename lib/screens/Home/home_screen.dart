@@ -4,12 +4,14 @@ import 'package:ecommerce_midterm/models/item_model.dart';
 import 'package:ecommerce_midterm/utils/color_constant.dart';
 import 'package:ecommerce_midterm/utils/enum_constant.dart';
 import 'package:ecommerce_midterm/utils/text_style_constant.dart';
+import 'package:ecommerce_midterm/utils/text_style_constant.dart';
 import 'package:ecommerce_midterm/utils/utils.dart';
 import 'package:ecommerce_midterm/view_models/home_view_model.dart';
 import 'package:ecommerce_midterm/view_models/user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -45,311 +47,326 @@ class _HomeScreenState extends State<HomeScreen> {
           return CustomScrollView(
             slivers: [
               SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 16),
-                            child: FormBuilderTextField(
-                              key: _formKey,
-                              name: "search",
-                              decoration: InputDecoration(
-                                contentPadding:
-                                    const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                fillColor:
-                                    Theme.of(context).colorScheme.tertiary,
-                                filled: true,
-                                hintText: 'Search for product',
-                                hintStyle: Theme.of(context)
-                                    .inputDecorationTheme
-                                    .hintStyle,
-                                prefixIcon: const Icon(
-                                  Icons.search,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushNamed("/cart");
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            child: Badge(
-                              badgeContent: Text('${homeVM.numItems}'),
-                              child: const Icon(
-                                Icons.shopping_cart,
-                                size: 30,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Text(
-                      "Categories",
-                      style: TextStyleConstant.normalLargexText.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.secondary),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 4,
-                            right: 8,
-                            bottom: 4,
-                            left: 8,
-                          ),
-                          decoration: BoxDecoration(
-                              color:
-                                  homeVM.selectedCategory == Categories.jacket
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).toggleableActiveColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(4))),
-                          child: InkWell(
-                            onTap: () {
-                              homeVM.setCategory(Categories.jacket);
-                            },
-                            child: Center(
-                              child: Text(
-                                "Jacket",
-                                style: TextStyleConstant.normalMediumText,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 4,
-                            right: 8,
-                            bottom: 4,
-                            left: 8,
-                          ),
-                          decoration: BoxDecoration(
-                              color:
-                                  homeVM.selectedCategory == Categories.tankTop
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).toggleableActiveColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(4))),
-                          child: InkWell(
-                            onTap: () {
-                              homeVM.setCategory(Categories.tankTop);
-                            },
-                            child: Center(
-                              child: Text(
-                                "TankTop",
-                                style: TextStyleConstant.normalMediumText,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 4,
-                            right: 8,
-                            bottom: 4,
-                            left: 8,
-                          ),
-                          decoration: BoxDecoration(
-                              color: homeVM.selectedCategory == Categories.jean
-                                  ? Theme.of(context).primaryColor
-                                  : Theme.of(context).toggleableActiveColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(4))),
-                          child: InkWell(
-                            onTap: () {
-                              homeVM.setCategory(Categories.jean);
-                            },
-                            child: Center(
-                              child: Text(
-                                "Jean",
-                                style: TextStyleConstant.normalMediumText,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 4,
-                            right: 8,
-                            bottom: 4,
-                            left: 8,
-                          ),
-                          decoration: BoxDecoration(
-                              color: homeVM.selectedCategory == Categories.polo
-                                  ? Theme.of(context).primaryColor
-                                  : Theme.of(context).toggleableActiveColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(4))),
-                          child: InkWell(
-                            onTap: () {
-                              homeVM.setCategory(Categories.polo);
-                            },
-                            child: Center(
-                              child: Text(
-                                "Polo",
-                                style: TextStyleConstant.normalMediumText,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 4,
-                            right: 8,
-                            bottom: 4,
-                            left: 8,
-                          ),
-                          decoration: BoxDecoration(
-                              color: homeVM.selectedCategory == Categories.kaki
-                                  ? Theme.of(context).primaryColor
-                                  : Theme.of(context).toggleableActiveColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(4))),
-                          child: InkWell(
-                            onTap: () {
-                              homeVM.setCategory(Categories.kaki);
-                            },
-                            child: Center(
-                              child: Text(
-                                "Kaki",
-                                style: TextStyleConstant.normalMediumText,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 4,
-                            right: 8,
-                            bottom: 4,
-                            left: 8,
-                          ),
-                          decoration: BoxDecoration(
-                              color: homeVM.selectedCategory == Categories.short
-                                  ? Theme.of(context).primaryColor
-                                  : Theme.of(context).toggleableActiveColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(4))),
-                          child: InkWell(
-                            onTap: () {
-                              homeVM.setCategory(Categories.short);
-                            },
-                            child: Center(
-                              child: Text(
-                                "Short",
-                                style: TextStyleConstant.normalMediumText,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 4,
-                            right: 8,
-                            bottom: 4,
-                            left: 8,
-                          ),
-                          decoration: BoxDecoration(
-                              color:
-                                  homeVM.selectedCategory == Categories.tShirt
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).toggleableActiveColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(4))),
-                          child: InkWell(
-                            onTap: () {
-                              homeVM.setCategory(Categories.tShirt);
-                            },
-                            child: Center(
-                              child: Text(
-                                "T-Shirt",
-                                style: TextStyleConstant.normalMediumText,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      "Featured Products",
-                      style: TextStyleConstant.normalLargexText.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.secondary),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                  ],
+                  delegate: SliverChildListDelegate([
+                const SizedBox(
+                  height: 16,
                 ),
-              ),
-              SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 1.0,
-                    mainAxisSpacing: 10.0,
-                    crossAxisSpacing: 10.0),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.width * 0.3,
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      child: Center(
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).toggleableActiveColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(4))),
-                          child: InkWell(
-                            onTap: () {
-                              homeVM.addToCart(snapshot.data?.docs[index]);
-                            },
-                            child: Container(color: Colors.red),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: FormBuilderTextField(
+                        key: _formKey,
+                        name: "search",
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          fillColor: Theme.of(context).colorScheme.tertiary,
+                          filled: true,
+                          hintText: 'Search for product',
+                          hintStyle:
+                              Theme.of(context).inputDecorationTheme.hintStyle,
+                          prefixIcon: const Icon(
+                            Icons.search,
                           ),
                         ),
                       ),
-                    );
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed("/cart");
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        child: Center(
+                          child: Badge(
+                            badgeContent: Text('${homeVM.numItems}'),
+                            child: const Icon(
+                              Icons.shopping_cart,
+                              size: 30,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                CarouselSlider(
+                    options: CarouselOptions(
+                        autoPlay: true,
+                        viewportFraction: 1,
+                        autoPlayInterval: const Duration(seconds: 3)),
+                    items: [
+                      Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("assets/banner_1.jpeg")),
+                            ),
+                          );
+                        },
+                      ),
+                      Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("assets/banner_2.jpg")),
+                            ),
+                          );
+                        },
+                      ),
+                    ]),
+                Text(
+                  "Categories",
+                  style: TextStyleConstant.normalLargexText.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.secondary),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 4,
+                        right: 8,
+                        bottom: 4,
+                        left: 8,
+                      ),
+                      decoration: BoxDecoration(
+                          color: homeVM.selectedCategory == Categories.jacket
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).toggleableActiveColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(4))),
+                      child: InkWell(
+                        onTap: () {
+                          homeVM.setCategory(Categories.jacket);
+                        },
+                        child: Center(
+                          child: Text(
+                            "Jacket",
+                            style: TextStyleConstant.normalMediumText,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 4,
+                        right: 8,
+                        bottom: 4,
+                        left: 8,
+                      ),
+                      decoration: BoxDecoration(
+                          color: homeVM.selectedCategory == Categories.tankTop
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).toggleableActiveColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(4))),
+                      child: InkWell(
+                        onTap: () {
+                          homeVM.setCategory(Categories.tankTop);
+                        },
+                        child: Center(
+                          child: Text(
+                            "TankTop",
+                            style: TextStyleConstant.normalMediumText,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 4,
+                        right: 8,
+                        bottom: 4,
+                        left: 8,
+                      ),
+                      decoration: BoxDecoration(
+                          color: homeVM.selectedCategory == Categories.jean
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).toggleableActiveColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(4))),
+                      child: InkWell(
+                        onTap: () {
+                          homeVM.setCategory(Categories.jean);
+                        },
+                        child: Center(
+                          child: Text(
+                            "Jean",
+                            style: TextStyleConstant.normalMediumText,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 4,
+                        right: 8,
+                        bottom: 4,
+                        left: 8,
+                      ),
+                      decoration: BoxDecoration(
+                          color: homeVM.selectedCategory == Categories.polo
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).toggleableActiveColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(4))),
+                      child: InkWell(
+                        onTap: () {
+                          homeVM.setCategory(Categories.polo);
+                        },
+                        child: Center(
+                          child: Text(
+                            "Polo",
+                            style: TextStyleConstant.normalMediumText,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 4,
+                        right: 8,
+                        bottom: 4,
+                        left: 8,
+                      ),
+                      decoration: BoxDecoration(
+                          color: homeVM.selectedCategory == Categories.kaki
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).toggleableActiveColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(4))),
+                      child: InkWell(
+                        onTap: () {
+                          homeVM.setCategory(Categories.kaki);
+                        },
+                        child: Center(
+                          child: Text(
+                            "Kaki",
+                            style: TextStyleConstant.normalMediumText,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 4,
+                        right: 8,
+                        bottom: 4,
+                        left: 8,
+                      ),
+                      decoration: BoxDecoration(
+                          color: homeVM.selectedCategory == Categories.short
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).toggleableActiveColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(4))),
+                      child: InkWell(
+                        onTap: () {
+                          homeVM.setCategory(Categories.short);
+                        },
+                        child: Center(
+                          child: Text(
+                            "Short",
+                            style: TextStyleConstant.normalMediumText,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 4,
+                        right: 8,
+                        bottom: 4,
+                        left: 8,
+                      ),
+                      decoration: BoxDecoration(
+                          color: homeVM.selectedCategory == Categories.tShirt
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).toggleableActiveColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(4))),
+                      child: InkWell(
+                        onTap: () {
+                          homeVM.setCategory(Categories.tShirt);
+                        },
+                        child: Center(
+                          child: Text(
+                            "T-Shirt",
+                            style: TextStyleConstant.normalMediumText,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  "Lastest Product",
+                  style: TextStyleConstant.normalLargexText.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.secondary),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+              ])),
+              SliverGrid(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20),
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return SizedBox(
+                        height: MediaQuery.of(context).size.width * 0.4,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/detail-cart',
+                                arguments: snapshot.data?.docs[index].data()
+                                    as Map<String, dynamic>);
+                          },
+                          child: const ItemsCard(
+                            base64String: "something",
+                          ),
+                        ));
                   },
                   childCount: snapshot.data?.docs.length,
                 ),
@@ -367,9 +384,39 @@ class ItemsCard extends StatelessWidget {
   final String base64String;
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(4),
-      child: Utils.imageFromBase64String(base64String),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image:
+                      AssetImage("assets/male/jacket/black_jacket/khoac2.jpg")),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Text(
+          "Men Jacket",
+          style: TextStyleConstant.normalLargeText.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.secondary),
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Text(
+          "345.000 vnd",
+          style: TextStyleConstant.normalMediumText.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.secondary),
+        ),
+      ],
     );
   }
 }
