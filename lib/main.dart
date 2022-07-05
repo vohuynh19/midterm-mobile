@@ -55,7 +55,21 @@ class _MyAppState extends State<MyApp> {
       },
       home: Builder(
         builder: (context) {
-          return const TabbarScreen();
+          return StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.active) {
+                return Center(child: CircularProgressIndicator());
+              }
+              final user = snapshot.data;
+              if (user != null &&
+                  FirebaseAuth.instance.currentUser?.email != null) {
+                return const TabbarScreen();
+              }
+
+              return LoginScreen();
+            },
+          );
         },
       ),
       routes: <String, WidgetBuilder>{

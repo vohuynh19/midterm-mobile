@@ -9,10 +9,8 @@ class SizeConstant {
   static const double fontSizexLarge = 18;
   static const double fontSizexxLarge = 20.0;
   static const double fontSizeScreenTitle = 22.0;
-  static BorderRadius borderRadius = BorderRadius.circular(20);
 
-  static EdgeInsets screenMargin = const EdgeInsets.all(16);
-  static EdgeInsets pagePadding = const EdgeInsets.symmetric(horizontal: 16);
+  static EdgeInsets screenPadding = const EdgeInsets.symmetric(horizontal: 16);
 
   static EdgeInsets symmetricHorizontal(double value) {
     return EdgeInsets.symmetric(horizontal: value);

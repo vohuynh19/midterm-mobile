@@ -3,29 +3,28 @@ import 'package:flutter/material.dart';
 import 'size_constant.dart';
 
 class TextStyleConstant {
-  static TextStyle normalMediumText = const TextStyle(
-    fontSize: SizeConstant.fontSizeMedium,
+  static TextStyle normalVerySmallText = const TextStyle(
+    fontSize: SizeConstant.fontSizeVerySmall,
+  );
+  static TextStyle normalxSmallText = const TextStyle(
+    fontSize: SizeConstant.fontSizexSmall,
   );
   static TextStyle normalSmallText = const TextStyle(
     fontSize: SizeConstant.fontSizeSmall,
   );
-  static TextStyle normalSmallxText = const TextStyle(
-    fontSize: SizeConstant.fontSizexSmall,
+  static TextStyle normalMediumText = const TextStyle(
+    fontSize: SizeConstant.fontSizeMedium,
   );
-  static TextStyle normalSmallxxText = const TextStyle(
-    fontSize: SizeConstant.fontSizeVerySmall,
-  );
-
   static TextStyle normalLargeText = const TextStyle(
     fontSize: SizeConstant.fontSizeLarge,
   );
-  static TextStyle normalLargexText = const TextStyle(
+  static TextStyle normalxLargeText = const TextStyle(
     fontSize: SizeConstant.fontSizexLarge,
   );
-  static TextStyle normalLargexxText = const TextStyle(
+  static TextStyle normalxxLargeText = const TextStyle(
     fontSize: SizeConstant.fontSizexxLarge,
   );
-  static TextStyle normalTitleText = const TextStyle(
+  static TextStyle normalScreenTitleText = const TextStyle(
     fontSize: SizeConstant.fontSizeScreenTitle,
   );
 }
