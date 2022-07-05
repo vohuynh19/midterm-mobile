@@ -1,8 +1,7 @@
-import 'package:ecommerce_midterm/screens/Auth/account_screen.dart';
 import 'package:ecommerce_midterm/screens/Cart/cart_screen.dart';
 import 'package:ecommerce_midterm/screens/Category/category_screen.dart';
-import 'package:ecommerce_midterm/screens/History/history_screen.dart';
 import 'package:ecommerce_midterm/screens/Home/home_screen.dart';
+import 'package:ecommerce_midterm/screens/MyAccount/my_account_screen.dart';
 import 'package:ecommerce_midterm/view_models/home_view_model.dart';
 import 'package:ecommerce_midterm/view_models/user_view_model.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,7 @@ class TabbarScreen extends StatelessWidget {
       case HomeTabItem.cart:
         return const CartScreen();
       case HomeTabItem.account:
-        return const AccountScreen();
+        return const MyAccountScreen();
       default:
     }
     return const Text("Test");
