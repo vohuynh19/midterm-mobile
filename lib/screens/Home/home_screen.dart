@@ -1,7 +1,12 @@
+import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_midterm/models/item_model.dart';
+import 'package:ecommerce_midterm/utils/color_constant.dart';
 import 'package:ecommerce_midterm/utils/enum_constant.dart';
 import 'package:ecommerce_midterm/utils/text_style_constant.dart';
-import 'package:ecommerce_midterm/view_models/category_view_model.dart';
+import 'package:ecommerce_midterm/utils/utils.dart';
+import 'package:ecommerce_midterm/view_models/home_view_model.dart';
+import 'package:ecommerce_midterm/view_models/user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
@@ -15,12 +20,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
-  late CategoryViewModel categoryVM;
+  late HomeViewModel homeVM;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    categoryVM = Provider.of<CategoryViewModel>(context);
+    homeVM = Provider.of<HomeViewModel>(context);
   }
 
   @override
@@ -35,57 +40,68 @@ class _HomeScreenState extends State<HomeScreen> {
             return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData) {
-            return Center(child: Text('noData'));
+            return const Center(child: Text('No Record'));
           }
           return CustomScrollView(
             slivers: [
-              SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.0,
-                    mainAxisSpacing: 10.0,
-                    crossAxisSpacing: 10.0),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return Container(
-                      child: Center(
-                        child: Text((snapshot.data?.docs[index] as dynamic)
-                            .data()['name'] as String),
-                      ),
-                      color: Colors.red,
-                    );
-                  },
-                  childCount: snapshot.data?.docs.length,
-                ),
-              ),
               SliverList(
                 delegate: SliverChildListDelegate(
                   [
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        child: FormBuilderTextField(
-                          key: _formKey,
-                          name: "search",
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            fillColor: Theme.of(context).colorScheme.tertiary,
-                            filled: true,
-                            hintText: 'Search for product',
-                            hintStyle: Theme.of(context)
-                                .inputDecorationTheme
-                                .hintStyle,
-                            prefixIcon: const Icon(
-                              Icons.search,
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 16),
+                            child: FormBuilderTextField(
+                              key: _formKey,
+                              name: "search",
+                              decoration: InputDecoration(
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                fillColor:
+                                    Theme.of(context).colorScheme.tertiary,
+                                filled: true,
+                                hintText: 'Search for product',
+                                hintStyle: Theme.of(context)
+                                    .inputDecorationTheme
+                                    .hintStyle,
+                                prefixIcon: const Icon(
+                                  Icons.search,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed("/cart");
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            child: Badge(
+                              badgeContent: Text('${homeVM.numItems}'),
+                              child: const Icon(
+                                Icons.shopping_cart,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    const Text("Categories"),
+                    Text(
+                      "Categories",
+                      style: TextStyleConstant.normalLargexText.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).colorScheme.secondary),
+                    ),
                     const SizedBox(
                       height: 16,
                     ),
@@ -96,17 +112,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 4,
                             right: 8,
                             bottom: 4,
-                            left: 4,
+                            left: 8,
                           ),
                           decoration: BoxDecoration(
-                              color: categoryVM.selectedCategory ==
-                                      Categories.jacket
-                                  ? Theme.of(context).colorScheme.secondary
-                                  : Theme.of(context).toggleableActiveColor,
+                              color:
+                                  homeVM.selectedCategory == Categories.jacket
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context).toggleableActiveColor,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(4))),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              homeVM.setCategory(Categories.jacket);
+                            },
                             child: Center(
                               child: Text(
                                 "Jacket",
@@ -123,17 +141,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 4,
                             right: 8,
                             bottom: 4,
-                            left: 4,
+                            left: 8,
                           ),
                           decoration: BoxDecoration(
-                              color: categoryVM.selectedCategory ==
-                                      Categories.tankTop
-                                  ? Theme.of(context).colorScheme.secondary
-                                  : Theme.of(context).toggleableActiveColor,
+                              color:
+                                  homeVM.selectedCategory == Categories.tankTop
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context).toggleableActiveColor,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(4))),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              homeVM.setCategory(Categories.tankTop);
+                            },
                             child: Center(
                               child: Text(
                                 "TankTop",
@@ -150,17 +170,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 4,
                             right: 8,
                             bottom: 4,
-                            left: 4,
+                            left: 8,
                           ),
                           decoration: BoxDecoration(
-                              color:
-                                  categoryVM.selectedCategory == Categories.jean
-                                      ? Theme.of(context).colorScheme.secondary
-                                      : Theme.of(context).toggleableActiveColor,
+                              color: homeVM.selectedCategory == Categories.jean
+                                  ? Theme.of(context).primaryColor
+                                  : Theme.of(context).toggleableActiveColor,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(4))),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              homeVM.setCategory(Categories.jean);
+                            },
                             child: Center(
                               child: Text(
                                 "Jean",
@@ -181,17 +202,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 4,
                             right: 8,
                             bottom: 4,
-                            left: 4,
+                            left: 8,
                           ),
                           decoration: BoxDecoration(
-                              color:
-                                  categoryVM.selectedCategory == Categories.polo
-                                      ? Theme.of(context).colorScheme.secondary
-                                      : Theme.of(context).toggleableActiveColor,
+                              color: homeVM.selectedCategory == Categories.polo
+                                  ? Theme.of(context).primaryColor
+                                  : Theme.of(context).toggleableActiveColor,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(4))),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              homeVM.setCategory(Categories.polo);
+                            },
                             child: Center(
                               child: Text(
                                 "Polo",
@@ -208,17 +230,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 4,
                             right: 8,
                             bottom: 4,
-                            left: 4,
+                            left: 8,
                           ),
                           decoration: BoxDecoration(
-                              color:
-                                  categoryVM.selectedCategory == Categories.kaki
-                                      ? Theme.of(context).colorScheme.secondary
-                                      : Theme.of(context).toggleableActiveColor,
+                              color: homeVM.selectedCategory == Categories.kaki
+                                  ? Theme.of(context).primaryColor
+                                  : Theme.of(context).toggleableActiveColor,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(4))),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              homeVM.setCategory(Categories.kaki);
+                            },
                             child: Center(
                               child: Text(
                                 "Kaki",
@@ -235,17 +258,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 4,
                             right: 8,
                             bottom: 4,
-                            left: 4,
+                            left: 8,
                           ),
                           decoration: BoxDecoration(
-                              color: categoryVM.selectedCategory ==
-                                      Categories.short
-                                  ? Theme.of(context).colorScheme.secondary
+                              color: homeVM.selectedCategory == Categories.short
+                                  ? Theme.of(context).primaryColor
                                   : Theme.of(context).toggleableActiveColor,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(4))),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              homeVM.setCategory(Categories.short);
+                            },
                             child: Center(
                               child: Text(
                                 "Short",
@@ -262,17 +286,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 4,
                             right: 8,
                             bottom: 4,
-                            left: 4,
+                            left: 8,
                           ),
                           decoration: BoxDecoration(
-                              color: categoryVM.selectedCategory ==
-                                      Categories.tShirt
-                                  ? Theme.of(context).colorScheme.secondary
-                                  : Theme.of(context).toggleableActiveColor,
+                              color:
+                                  homeVM.selectedCategory == Categories.tShirt
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context).toggleableActiveColor,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(4))),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              homeVM.setCategory(Categories.tShirt);
+                            },
                             child: Center(
                               child: Text(
                                 "T-Shirt",
@@ -283,30 +309,67 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    TextButton(
-                      onPressed: () {
-                        const city = <String, String>{
-                          "name": "Los Angeles",
-                          "state": "CA",
-                          "country": "USA"
-                        };
-
-                        FirebaseFirestore.instance
-                            .collection("cities")
-                            .doc("LA")
-                            .set(city)
-                            .onError(
-                                (e, _) => print("Error writing document: $e"));
-                      },
-                      child: Text('Add item'),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      "Featured Products",
+                      style: TextStyleConstant.normalLargexText.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).colorScheme.secondary),
+                    ),
+                    const SizedBox(
+                      height: 16,
                     ),
                   ],
+                ),
+              ),
+              SliverGrid(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 1.0,
+                    mainAxisSpacing: 10.0,
+                    crossAxisSpacing: 10.0),
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.width * 0.3,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: Center(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).toggleableActiveColor,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(4))),
+                          child: InkWell(
+                            onTap: () {
+                              homeVM.addToCart(snapshot.data?.docs[index]);
+                            },
+                            child: Container(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  childCount: snapshot.data?.docs.length,
                 ),
               ),
             ],
           );
         },
       ),
+    );
+  }
+}
+
+class ItemsCard extends StatelessWidget {
+  const ItemsCard({Key? key, required this.base64String}) : super(key: key);
+  final String base64String;
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(4),
+      child: Utils.imageFromBase64String(base64String),
     );
   }
 }

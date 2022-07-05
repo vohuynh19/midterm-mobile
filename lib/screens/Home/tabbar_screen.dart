@@ -1,5 +1,5 @@
 import 'package:ecommerce_midterm/screens/Auth/account_screen.dart';
-import 'package:ecommerce_midterm/screens/Category/category_screen.dart';
+import 'package:ecommerce_midterm/screens/Cart/cart_screen.dart';
 import 'package:ecommerce_midterm/screens/History/history_screen.dart';
 import 'package:ecommerce_midterm/screens/Home/home_screen.dart';
 import 'package:ecommerce_midterm/view_models/home_view_model.dart';
@@ -21,8 +21,6 @@ class TabbarScreen extends StatelessWidget {
     switch (tab) {
       case HomeTabItem.home:
         return const HomeScreen();
-      case HomeTabItem.category:
-        return const CategoryScreen();
       case HomeTabItem.history:
         return const HistoryScreen();
       case HomeTabItem.account:
@@ -48,11 +46,11 @@ class TabbarScreen extends StatelessWidget {
           items: _tabbarItems(vm),
           onTap: (value) {
             var item = vm.homeTabItems[value];
-            if ((item == HomeTabItem.history || item == HomeTabItem.account) &&
-                !userVM.isAuthorized) {
-              Navigator.pushNamed(context, '/login');
-              return;
-            }
+            // if ((item == HomeTabItem.history || item == HomeTabItem.account) &&
+            //     !userVM.isAuthorized) {
+            //   Navigator.pushNamed(context, '/login');
+            //   return;
+            // }
             vm.setSelectedTabIndex(value);
           },
           unselectedItemColor: Theme.of(context).iconTheme.color,

@@ -1,7 +1,9 @@
+import 'package:ecommerce_midterm/screens/Auth/account_screen.dart';
 import 'package:ecommerce_midterm/screens/Auth/login_screen.dart';
+import 'package:ecommerce_midterm/screens/Cart/cart_screen.dart';
+import 'package:ecommerce_midterm/screens/History/history_screen.dart';
 import 'package:ecommerce_midterm/screens/Home/tabbar_screen.dart';
 import 'package:ecommerce_midterm/utils/themes.dart';
-import 'package:ecommerce_midterm/view_models/category_view_model.dart';
 import 'package:ecommerce_midterm/view_models/home_view_model.dart';
 import 'package:ecommerce_midterm/view_models/user_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,10 +24,6 @@ void main() async {
     ),
     ChangeNotifierProvider(
       create: (context) => HomeViewModel(),
-      lazy: true,
-    ),
-    ChangeNotifierProvider(
-      create: (context) => CategoryViewModel(),
       lazy: true,
     ),
   ], child: const MyApp()));
@@ -60,6 +58,9 @@ class _MyAppState extends State<MyApp> {
       ),
       routes: <String, WidgetBuilder>{
         '/login': (context) => const LoginScreen(),
+        '/cart': (context) => const CartScreen(),
+        '/history': (context) => const HistoryScreen(),
+        '/account': (context) => const AccountScreen()
       },
     );
   }
