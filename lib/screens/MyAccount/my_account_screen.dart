@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_midterm/utils/extensions/ext.dart';
 import 'package:ecommerce_midterm/utils/extensions/textstyle_ext.dart';
 import 'package:ecommerce_midterm/utils/text_style_constant.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../utils/color_constant.dart';
 
@@ -32,7 +33,7 @@ class MyAccountScreen extends StatelessWidget {
                     child: InkWell(
                       onTap: () => {},
                       child: SingleChildScrollView(
-                        child: Container(
+                        child: SizedBox(
                           height: 140,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -128,7 +129,8 @@ class MyAccountScreen extends StatelessWidget {
                               width: double.infinity,
                               height: 40,
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () =>
+                                    FirebaseAuth.instance.signOut(),
                                 child: const Text('Đăng xuất'),
                               ),
                             )

@@ -73,33 +73,77 @@ class ItemDetail extends StatelessWidget {
                     height: 20,
                   ),
                   Text(
-                    'Size',
+                    'Số lượng:',
                     style: TextStyleConstant.normalLargeText.semiBold,
                   ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            padding: MaterialStateProperty.all(EdgeInsets.zero),
+                            backgroundColor: MaterialStateProperty.all(
+                                ColorConstant.backgroundColor),
+                            foregroundColor: MaterialStateProperty.all(
+                                ColorConstant.textColor),
+                          ),
+                          onPressed: () => {},
+                          child: const Icon(
+                            Icons.remove,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          '1',
+                          style: TextStyleConstant.normalLargeText.semiBold,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            padding: MaterialStateProperty.all(EdgeInsets.zero),
+                          ),
+                          onPressed: () => {},
+                          child: const Icon(
+                            Icons.add,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
                   SizedBox(
-                    height: 60,
-                    child: Row(
-                      children: const [
-                        SizeBox(
-                          isChosen: true,
-                          type: 'X',
-                        ),
-                        SizeBox(
-                          isChosen: false,
-                          type: 'M',
-                        ),
-                        SizeBox(
-                          isChosen: false,
-                          type: 'XL',
-                        ),
-                        SizeBox(
-                          isChosen: false,
-                          type: 'XXL',
-                        ),
-                      ],
+                    width: double.infinity,
+                    height: 40,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: const Text('Thêm vào giỏ hàng'),
                     ),
-                  )
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                 ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: 8,
+            left: 8,
+            child: InkWell(
+              onTap: () => Navigator.pop(context),
+              child: const CircleAvatar(
+                radius: 16,
+                backgroundColor: ColorConstant.primaryColor,
+                child: Icon(Icons.arrow_back),
               ),
             ),
           ),
