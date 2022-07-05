@@ -1,7 +1,13 @@
 import 'package:ecommerce_midterm/screens/Auth/login_screen.dart';
+import 'package:ecommerce_midterm/screens/Home/tabbar_screen.dart';
+import 'package:ecommerce_midterm/utils/themes.dart';
+import 'package:ecommerce_midterm/view_models/category_view_model.dart';
+import 'package:ecommerce_midterm/view_models/home_view_model.dart';
+import 'package:ecommerce_midterm/view_models/user_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -9,60 +15,51 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (context) => UserViewModel(),
+      lazy: true,
+    ),
+    ChangeNotifierProvider(
+      create: (context) => HomeViewModel(),
+      lazy: true,
+    ),
+    ChangeNotifierProvider(
+      create: (context) => CategoryViewModel(),
+      lazy: true,
+    ),
+  ], child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({
+    Key? key,
+  }) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: MyTheme.themeData,
+      debugShowCheckedModeBanner: false,
+      title: 'Shopping App',
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: child!,
+        );
+      },
+      home: Builder(
+        builder: (context) {
+          return const TabbarScreen();
+        },
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.active) {
-          return Center(child: CircularProgressIndicator());
-        }
-        final user = snapshot.data;
-        if (user != null && FirebaseAuth.instance.currentUser?.email != null) {
-          return Scaffold(
-              body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('home'),
-                TextButton(
-                    onPressed: () => FirebaseAuth.instance.signOut(),
-                    child: Text('sign out'))
-              ],
-            ),
-          ));
-        } else {
-          return LoginScreen();
-        }
+      routes: <String, WidgetBuilder>{
+        '/login': (context) => const LoginScreen(),
       },
     );
   }
