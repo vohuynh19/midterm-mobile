@@ -40,26 +40,46 @@ class ItemDetail extends StatelessWidget {
             child: Container(
               width: width,
               height: height * 0.6,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                 color: ColorConstant.lightColor.withOpacity(0.85),
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(32),
-                  topRight: Radius.circular(32),
+                  topLeft: Radius.circular(24),
+                  topRight: Radius.circular(24),
                 ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Bánh gạo vị cá nhật'),
-                  Text('Mô tả sản phẩm:'),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Bánh gạo vị cá nhật',
+                    style: TextStyleConstant.normalxxLargeText.semiBold,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Mô tả sản phẩm:',
+                    style: TextStyleConstant.normalLargeText.semiBold,
+                  ),
                   Text(
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ullamcorper in non at egestas metus auctor ultricies phasellus senectus. Turpis orci donec faucibus turpis malesuada sed diam potenti nulla.',
+                    style: TextStyleConstant.normalMediumText,
                   ),
-                  Text('Size'),
-                  Container(
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Size',
+                    style: TextStyleConstant.normalLargeText.semiBold,
+                  ),
+                  SizedBox(
                     height: 60,
                     child: Row(
-                      children: [
+                      children: const [
                         SizeBox(
                           isChosen: true,
                           type: 'X',
