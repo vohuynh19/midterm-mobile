@@ -1,3 +1,4 @@
+import 'package:ecommerce_midterm/screens/ItemDetail/item_detail.dart';
 import 'package:ecommerce_midterm/utils/extensions/ext.dart';
 import 'package:ecommerce_midterm/utils/extensions/textstyle_ext.dart';
 import 'package:flutter/material.dart';
@@ -102,66 +103,69 @@ class HorizontalScrollItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(8),
-      height: 290,
-      width: 160,
-      decoration: BoxDecoration(
-          color: ColorConstant.lightColor,
-          borderRadius: BorderRadius.circular(8)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 160,
-            height: 160,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(src),
-              colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.1), BlendMode.softLight),
-            )),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          Text(
-            title,
-            style: TextStyleConstant.normalLargeText.semiBold,
-          ),
-          Text(
-            desc,
-            style: TextStyleConstant.normalxSmallText,
-          ),
-          const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '${price.formatCurrency()} đ',
-                style: TextStyleConstant.normalxxLargeText
-                    .setColor(ColorConstant.primaryColor)
-                    .semiBold,
-              ),
-              SizedBox(
-                height: 24,
-                width: 24,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(EdgeInsets.zero),
-                  ),
-                  onPressed: () => {},
-                  child: const Icon(
-                    Icons.add,
-                    size: 20,
-                  ),
+    return InkWell(
+      onTap: (() => Navigator.pushNamed(context, ItemDetail.route)),
+      child: Container(
+        margin: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
+        height: 290,
+        width: 160,
+        decoration: BoxDecoration(
+            color: ColorConstant.lightColor,
+            borderRadius: BorderRadius.circular(8)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 160,
+              height: 160,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(src),
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.1), BlendMode.softLight),
+              )),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Text(
+              title,
+              style: TextStyleConstant.normalLargeText.semiBold,
+            ),
+            Text(
+              desc,
+              style: TextStyleConstant.normalxSmallText,
+            ),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${price.formatCurrency()} đ',
+                  style: TextStyleConstant.normalxxLargeText
+                      .setColor(ColorConstant.primaryColor)
+                      .semiBold,
                 ),
-              )
-            ],
-          )
-        ],
+                SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all(EdgeInsets.zero),
+                    ),
+                    onPressed: () => {},
+                    child: const Icon(
+                      Icons.add,
+                      size: 20,
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

@@ -7,12 +7,10 @@ import 'package:ecommerce_midterm/utils/extensions/textstyle_ext.dart';
 import 'package:ecommerce_midterm/utils/size_constant.dart';
 import 'package:ecommerce_midterm/utils/text_style_constant.dart';
 import 'package:ecommerce_midterm/view_models/category_view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../components/HorizontalList.dart';
-import '../components/VerticalList.dart';
 
 const dataArr = [
   {"title": "Đồ Ăn Vặt", "src": ""},

@@ -1,4 +1,5 @@
 import 'package:ecommerce_midterm/screens/Auth/login_screen.dart';
+import 'package:ecommerce_midterm/screens/ItemDetail/item_detail.dart';
 import 'package:ecommerce_midterm/screens/TabBar/tabbar_screen.dart';
 import 'package:ecommerce_midterm/utils/themes.dart';
 import 'package:ecommerce_midterm/view_models/category_view_model.dart';
@@ -74,6 +75,7 @@ class _MyAppState extends State<MyApp> {
       ),
       routes: <String, WidgetBuilder>{
         '/login': (context) => const LoginScreen(),
+        ItemDetail.route: (context) => const ItemDetail(),
       },
     );
   }
