@@ -54,18 +54,32 @@ class _MyAppState extends State<MyApp> {
       },
       home: Builder(
         builder: (context) {
-          return const TabbarScreen();
+          return StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.active) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              final user = snapshot.data;
+              if (user != null &&
+                  FirebaseAuth.instance.currentUser?.email != null) {
+                return const TabbarScreen();
+              }
+
+              return const LoginScreen();
+            },
+          );
         },
       ),
       routes: <String, WidgetBuilder>{
         '/login': (context) => const LoginScreen(),
         '/cart': (context) => const CartScreen(),
         '/history': (context) => const HistoryScreen(),
-        '/account': (context) => const AccountScreen(),
+        '/account': (context) => const MyAccountScreen(),
         '/detail-cart': (context) {
           final args = ModalRoute.of(context)!.settings.arguments
               as Map<String, dynamic>;
-          return DetailScreen(
+          return ItemDetail(
             cartInfo: args,
           );
         }

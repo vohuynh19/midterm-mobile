@@ -24,7 +24,7 @@ class TabbarScreen extends StatelessWidget {
       case HomeTabItem.history:
         return const HistoryScreen();
       case HomeTabItem.account:
-        return const AccountScreen();
+        return const MyAccountScreen();
       default:
     }
     return const Text("Test");
@@ -46,11 +46,6 @@ class TabbarScreen extends StatelessWidget {
           items: _tabbarItems(vm),
           onTap: (value) {
             var item = vm.homeTabItems[value];
-            // if ((item == HomeTabItem.history || item == HomeTabItem.account) &&
-            //     !userVM.isAuthorized) {
-            //   Navigator.pushNamed(context, '/login');
-            //   return;
-            // }
             vm.setSelectedTabIndex(value);
           },
           unselectedItemColor: Theme.of(context).iconTheme.color,

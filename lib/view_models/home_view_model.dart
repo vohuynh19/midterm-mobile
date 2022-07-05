@@ -29,26 +29,17 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  addToCart(dynamic value) {
-    // if (carts.contains(value)) {
-    //   if (nameCount.containsKey(value.data()['name'])) {
-    //     nameCount[value.data()['name']] =
-    //         (nameCount[value.data()['name']]! + 1);
-    //   } else {
-    //     nameCount[value.data()['name']] = 1;
-
-    //   }
-    // }
+  addToCart(Map<String, dynamic> value) {
     carts.add({
-      "name": value.data()['category'],
-      "color": value.data()['color'],
-      "desc": value.data()['desc'],
-      "images": value.data()['images'],
-      "price": value.data()['price'],
-      "size": value.data()['size']
+      "name": value['category'],
+      "color": value['color'],
+      "desc": value['desc'],
+      "images": value['images'],
+      "price": value['price'],
+      "size": value['size']
     });
     numItems = numItems + 1;
-    totalAmount = totalAmount + value.data()['price'];
+    totalAmount = totalAmount + value['price'];
     notifyListeners();
   }
 

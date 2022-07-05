@@ -355,18 +355,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     return SizedBox(
-                        height: MediaQuery.of(context).size.width * 0.4,
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/detail-cart',
-                                arguments: snapshot.data?.docs[index].data()
-                                    as Map<String, dynamic>);
-                          },
-                          child: const ItemsCard(
-                            base64String: "something",
-                          ),
-                        ));
+                      height: MediaQuery.of(context).size.width * 0.4,
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/detail-cart',
+                              arguments: snapshot.data?.docs[index].data()
+                                  as Map<String, dynamic>);
+                        },
+                        child: ItemsCard(
+                            cardInfo:
+                                (snapshot.data?.docs[index] as dynamic).data()),
+                      ),
+                    );
                   },
                   childCount: snapshot.data?.docs.length,
                 ),
@@ -380,8 +381,8 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class ItemsCard extends StatelessWidget {
-  const ItemsCard({Key? key, required this.base64String}) : super(key: key);
-  final String base64String;
+  const ItemsCard({Key? key, required this.cardInfo}) : super(key: key);
+  final Map<String, dynamic> cardInfo;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -389,12 +390,12 @@ class ItemsCard extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
               image: DecorationImage(
                   fit: BoxFit.cover,
                   image:
-                      AssetImage("assets/male/jacket/black_jacket/khoac2.jpg")),
+                      Utils.imageFromBase64String(cardInfo["images"][0]).image),
             ),
           ),
         ),
@@ -402,7 +403,7 @@ class ItemsCard extends StatelessWidget {
           height: 4,
         ),
         Text(
-          "Men Jacket",
+          cardInfo["name"].toString(),
           style: TextStyleConstant.normalLargeText.copyWith(
               fontWeight: FontWeight.w600,
               color: Theme.of(context).colorScheme.secondary),
@@ -411,7 +412,7 @@ class ItemsCard extends StatelessWidget {
           height: 4,
         ),
         Text(
-          "345.000 vnd",
+          "${cardInfo["price"]} vnd",
           style: TextStyleConstant.normalMediumText.copyWith(
               fontWeight: FontWeight.w600,
               color: Theme.of(context).colorScheme.secondary),
