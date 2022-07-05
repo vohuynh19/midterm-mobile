@@ -120,12 +120,13 @@ class HorizontalScrollItem extends StatelessWidget {
               width: 160,
               height: 160,
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(src),
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.1), BlendMode.softLight),
-              )),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(src),
+                  colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.1), BlendMode.softLight),
+                ),
+              ),
             ),
             const SizedBox(
               height: 12,
