@@ -67,7 +67,9 @@ class CartScreen extends StatelessWidget {
                           width: double.infinity,
                           height: 40,
                           child: ElevatedButton(
-                            onPressed: () => {},
+                            onPressed: () {
+                              vm.submitCart();
+                            },
                             child: const Text('Xác nhận đặt hàng'),
                           ),
                         )
