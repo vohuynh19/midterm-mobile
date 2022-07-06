@@ -1,13 +1,18 @@
+import 'package:ecommerce_midterm/provider/item-provider.dart';
 import 'package:ecommerce_midterm/screens/Auth/login_screen.dart';
 import 'package:ecommerce_midterm/screens/ItemDetail/item_detail.dart';
 import 'package:ecommerce_midterm/screens/TabBar/tabbar_screen.dart';
+import 'package:ecommerce_midterm/screens/components/HorizontalList.dart';
+import 'package:ecommerce_midterm/utils/color_constant.dart';
 import 'package:ecommerce_midterm/utils/themes.dart';
 import 'package:ecommerce_midterm/view_models/category_view_model.dart';
 import 'package:ecommerce_midterm/view_models/home_view_model.dart';
+import 'package:ecommerce_midterm/view_models/item_detail_modal.dart';
 import 'package:ecommerce_midterm/view_models/user_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
@@ -29,6 +34,14 @@ void main() async {
       create: (context) => CategoryViewModel(),
       lazy: true,
     ),
+    ChangeNotifierProvider(
+      create: (context) => ItemProvider()..fetchItems(),
+      lazy: true,
+    ),
+    ChangeNotifierProvider(
+      create: (context) => ItemDetailViewModal(),
+      lazy: true,
+    )
   ], child: const MyApp()));
 }
 
@@ -60,22 +73,24 @@ class _MyAppState extends State<MyApp> {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.active) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(
+                    child: SpinKitWave(
+                  color: ColorConstant.primaryColor,
+                ));
               }
               final user = snapshot.data;
               if (user != null &&
                   FirebaseAuth.instance.currentUser?.email != null) {
                 return const TabbarScreen();
               }
-
-              return LoginScreen();
+              return const LoginScreen();
             },
           );
         },
       ),
       routes: <String, WidgetBuilder>{
         '/login': (context) => const LoginScreen(),
-        ItemDetail.route: (context) => const ItemDetail(),
+        ItemDetail.route: (context) => const ItemDetail()
       },
     );
   }

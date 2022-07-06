@@ -1,10 +1,18 @@
+import 'package:ecommerce_midterm/provider/item-provider.dart';
+import 'package:ecommerce_midterm/screens/Category/category_screen.dart';
 import 'package:ecommerce_midterm/screens/ItemDetail/item_detail.dart';
 import 'package:ecommerce_midterm/utils/extensions/ext.dart';
 import 'package:ecommerce_midterm/utils/extensions/textstyle_ext.dart';
+import 'package:ecommerce_midterm/utils/utils.dart';
+import 'package:ecommerce_midterm/view_models/item_detail_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/color_constant.dart';
 import '../../utils/text_style_constant.dart';
+import '../../view_models/category_view_model.dart';
+import '../../view_models/home_view_model.dart';
 
 const foodArrData = [
   {
@@ -59,26 +67,71 @@ const foodArrData = [
 ];
 
 class HorizontalList extends StatelessWidget {
-  const HorizontalList({Key? key}) : super(key: key);
+  final String type;
+
+  const HorizontalList({Key? key, required this.type}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    var vm = Provider.of<ItemProvider>(context);
+    return SizedBox(
       height: 290,
       width: double.infinity,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
-          ...foodArrData.map((e) => HorizontalScrollItem(
-                desc: e['desc'] as String,
-                title: e['title'] as String,
-                src: e['src'] as String,
-                rateCounter: e['rateCounter'] as double,
-                price: e['price'] as double,
-              )),
-          const ViewMore(
-            type: 'kho',
-          )
+          ...(vm.isLoading
+              ? [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: const Center(
+                        child: SpinKitWave(
+                      color: ColorConstant.primaryColor,
+                    )),
+                  )
+                ]
+              : [
+                  ...vm
+                      .getCategoryItem(type)
+                      .sublist(
+                          0,
+                          vm.getCategoryItem(type).length > 5
+                              ? 5
+                              : vm.getCategoryItem(type).length)
+                      .map((e) => HorizontalScrollItem(
+                            desc: e['desc'] == null ? '' : e['desc'] as String,
+                            title:
+                                e['title'] == null ? '' : e['title'] as String,
+                            src: e['images'] == null
+                                ? ''
+                                : e['images'] as String,
+                            price: double.parse(e['price'].toString()),
+                          )),
+                  vm.getCategoryItem(type).length == 0
+                      ? SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.no_backpack,
+                                  size: 100,
+                                ),
+                                Text(
+                                  'No Record',
+                                  style: TextStyleConstant.normalLargeText,
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      : vm.getCategoryItem(type).length > 5
+                          ? ViewMore(
+                              type: type,
+                            )
+                          : const SizedBox()
+                ])
         ],
       ),
     );
@@ -89,7 +142,7 @@ class HorizontalScrollItem extends StatelessWidget {
   final String src;
   final String title;
   final String desc;
-  final double rateCounter;
+
   final double price;
 
   const HorizontalScrollItem(
@@ -97,14 +150,22 @@ class HorizontalScrollItem extends StatelessWidget {
       required this.src,
       required this.title,
       required this.desc,
-      required this.rateCounter,
       required this.price})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var vm = Provider.of<ItemDetailViewModal>(context);
+
     return InkWell(
-      onTap: (() => Navigator.pushNamed(context, ItemDetail.route)),
+      onTap: (() {
+        Navigator.pushNamed(
+          context,
+          ItemDetail.route,
+        );
+
+        vm.fetchData(context, title);
+      }),
       child: Container(
         margin: const EdgeInsets.all(8),
         padding: const EdgeInsets.all(8),
@@ -122,7 +183,7 @@ class HorizontalScrollItem extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage(src),
+                  image: Utils.imageFromBase64String(src).image,
                   colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(0.1), BlendMode.softLight),
                 ),
@@ -134,10 +195,13 @@ class HorizontalScrollItem extends StatelessWidget {
             Text(
               title,
               style: TextStyleConstant.normalLargeText.semiBold,
+              overflow: TextOverflow.ellipsis,
             ),
             Text(
               desc,
               style: TextStyleConstant.normalxSmallText,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
             const Spacer(),
             Row(
@@ -182,6 +246,8 @@ class ViewMore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var vm = Provider.of<HomeViewModel>(context);
+    var categoryVM = Provider.of<CategoryViewModel>(context);
     return Center(
       child: SizedBox(
         height: 100,
@@ -189,13 +255,18 @@ class ViewMore extends StatelessWidget {
         child: Column(
           children: [
             ElevatedButton(
-              child: const Icon(Icons.next_plan),
-              onPressed: () {},
-            ),
-            const Text('Xem them')
+                child: const Icon(Icons.next_plan),
+                onPressed: () =>
+                    {vm.setSelectedTabIndex(1), categoryVM.setCategory(type)}),
+            const Text('Xem thêm')
           ],
         ),
       ),
     );
   }
+}
+
+class DetailScreenArgument {
+  String title;
+  DetailScreenArgument(this.title);
 }

@@ -1,7 +1,10 @@
 import 'package:ecommerce_midterm/utils/color_constant.dart';
 import 'package:ecommerce_midterm/utils/extensions/textstyle_ext.dart';
 import 'package:ecommerce_midterm/utils/text_style_constant.dart';
+import 'package:ecommerce_midterm/utils/utils.dart';
+import 'package:ecommerce_midterm/view_models/item_detail_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ItemDetail extends StatelessWidget {
   static String route = '/itemDetail';
@@ -10,6 +13,7 @@ class ItemDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var vm = Provider.of<ItemDetailViewModal>(context);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 
@@ -27,7 +31,7 @@ class ItemDetail extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: const AssetImage("assets/images/doanvat/gao.jpeg"),
+                  image: Utils.imageFromBase64String(vm.data['images']).image,
                   colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(0.1), BlendMode.softLight),
                 ),
@@ -55,8 +59,10 @@ class ItemDetail extends StatelessWidget {
                     height: 20,
                   ),
                   Text(
-                    'Bánh gạo vị cá nhật',
+                    vm.data['title'],
                     style: TextStyleConstant.normalxxLargeText.semiBold,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(
                     height: 20,
@@ -66,8 +72,10 @@ class ItemDetail extends StatelessWidget {
                     style: TextStyleConstant.normalLargeText.semiBold,
                   ),
                   Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ullamcorper in non at egestas metus auctor ultricies phasellus senectus. Turpis orci donec faucibus turpis malesuada sed diam potenti nulla.',
+                    vm.data['desc'],
                     style: TextStyleConstant.normalMediumText,
+                    maxLines: 8,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(
                     height: 20,
@@ -89,7 +97,10 @@ class ItemDetail extends StatelessWidget {
                             foregroundColor: MaterialStateProperty.all(
                                 ColorConstant.textColor),
                           ),
-                          onPressed: () => {},
+                          onPressed: () => {
+                            vm.setItemNumber(
+                                vm.itemNumber - 1 >= 0 ? vm.itemNumber - 1 : 0)
+                          },
                           child: const Icon(
                             Icons.remove,
                             size: 20,
@@ -97,9 +108,9 @@ class ItemDetail extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         child: Text(
-                          '1',
+                          vm.itemNumber.toString(),
                           style: TextStyleConstant.normalLargeText.semiBold,
                         ),
                       ),
@@ -110,7 +121,7 @@ class ItemDetail extends StatelessWidget {
                           style: ButtonStyle(
                             padding: MaterialStateProperty.all(EdgeInsets.zero),
                           ),
-                          onPressed: () => {},
+                          onPressed: () => vm.setItemNumber(vm.itemNumber + 1),
                           child: const Icon(
                             Icons.add,
                             size: 20,
@@ -119,7 +130,7 @@ class ItemDetail extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   SizedBox(
                     width: double.infinity,
                     height: 40,
@@ -173,11 +184,12 @@ class SizeBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Center(
-          child: Text(type,
-              style: isChosen
-                  ? TextStyleConstant.normalLargeText.semiBold
-                      .setColor(ColorConstant.backgroundColor)
-                  : TextStyleConstant.normalLargeText.semiBold)),
+        child: Text(type,
+            style: isChosen
+                ? TextStyleConstant.normalLargeText.semiBold
+                    .setColor(ColorConstant.backgroundColor)
+                : TextStyleConstant.normalLargeText.semiBold),
+      ),
     );
   }
 }

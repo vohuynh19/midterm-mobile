@@ -3,6 +3,7 @@ import 'package:ecommerce_midterm/utils/extensions/ext.dart';
 import 'package:ecommerce_midterm/utils/extensions/textstyle_ext.dart';
 import 'package:ecommerce_midterm/utils/text_style_constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../utils/color_constant.dart';
 
 class CartScreen extends StatelessWidget {
@@ -17,7 +18,13 @@ class CartScreen extends StatelessWidget {
           future: FirebaseFirestore.instance.collection("items").get(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: const Center(
+                    child: SpinKitWave(
+                  color: ColorConstant.primaryColor,
+                )),
+              );
             }
             if (!snapshot.hasData) {
               return const Center(child: Text('noData'));
