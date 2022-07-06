@@ -1,5 +1,4 @@
 import 'package:ecommerce_midterm/provider/item-provider.dart';
-import 'package:ecommerce_midterm/screens/Category/category_screen.dart';
 import 'package:ecommerce_midterm/screens/ItemDetail/item_detail.dart';
 import 'package:ecommerce_midterm/utils/extensions/ext.dart';
 import 'package:ecommerce_midterm/utils/extensions/textstyle_ext.dart';
@@ -13,58 +12,6 @@ import '../../utils/color_constant.dart';
 import '../../utils/text_style_constant.dart';
 import '../../view_models/category_view_model.dart';
 import '../../view_models/home_view_model.dart';
-
-const foodArrData = [
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7500.0
-  },
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7000.0
-  },
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7000.0
-  },
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7000.0
-  },
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7000.0
-  },
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7000.0
-  },
-  {
-    "src": "assets/images/doanvat/gao.jpeg",
-    "rateCounter": 7.0,
-    "title": "Bánh Gạo",
-    "desc": "Bánh gạo giá rẻ, uy tín chất lượng nhất TP.HCM",
-    "price": 7000.0
-  },
-];
 
 class HorizontalList extends StatelessWidget {
   final String type;

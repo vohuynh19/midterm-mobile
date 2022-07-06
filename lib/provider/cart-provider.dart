@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CartProvider extends ChangeNotifier {
   List<Map<String, dynamic>> itemArr = [];
@@ -21,7 +23,18 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  void removeAll() async {
+  void removeAll() {
+    itemArr = [];
+    notifyListeners();
+  }
+
+  void submitCart() async {
+    var collection = FirebaseFirestore.instance.collection('cart_record');
+    collection
+        .add({"docs": itemArr, "createdAt": DateTime.now()}) // <-- Your data
+        .then((_) => Fluttertoast.showToast(msg: "Đặt hàng thành công"))
+        .catchError(
+            (error) => Fluttertoast.showToast(msg: "Đặt hàng thất bại"));
     itemArr = [];
     notifyListeners();
   }

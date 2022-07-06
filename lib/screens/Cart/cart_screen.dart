@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_midterm/provider/cart-provider.dart';
 import 'package:ecommerce_midterm/utils/extensions/ext.dart';
 import 'package:ecommerce_midterm/utils/extensions/textstyle_ext.dart';
 import 'package:ecommerce_midterm/utils/text_style_constant.dart';
+import 'package:ecommerce_midterm/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 import '../../utils/color_constant.dart';
 
 class CartScreen extends StatelessWidget {
@@ -11,73 +14,87 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var vm = Provider.of<CartProvider>(context);
+
     return SafeArea(
       child: Container(
         color: Theme.of(context).backgroundColor,
-        child: FutureBuilder(
-          future: FirebaseFirestore.instance.collection("items").get(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: const Center(
-                    child: SpinKitWave(
-                  color: ColorConstant.primaryColor,
-                )),
-              );
-            }
-            if (!snapshot.hasData) {
-              return const Center(child: Text('noData'));
-            }
-            return CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  leading: Center(
-                    child: Text(
-                      'Xoá hết',
-                      style: TextStyleConstant.normalLargeText
-                          .setColor(ColorConstant.primaryColor)
-                          .semiBold,
-                    ),
-                  ),
-                  leadingWidth: 80,
-                  pinned: true,
-                  backgroundColor: ColorConstant.backgroundColor,
-                  floating: true,
-                  title: Text(
-                    'Giỏ Hàng',
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              leading: Center(
+                child: TextButton(
+                  child: Text(
+                    'Xoá hết',
                     style: TextStyleConstant.normalLargeText
-                        .setColor(ColorConstant.textColor)
+                        .setColor(ColorConstant.primaryColor)
                         .semiBold,
                   ),
-                  centerTitle: true,
+                  onPressed: () {
+                    vm.removeAll();
+                  },
                 ),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CartItem(),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CartItem(),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CartItem(),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CartItem(),
-                    )
-                  ]),
+              ),
+              leadingWidth: 80,
+              pinned: true,
+              backgroundColor: ColorConstant.backgroundColor,
+              floating: true,
+              title: Text(
+                'Giỏ Hàng',
+                style: TextStyleConstant.normalLargeText
+                    .setColor(ColorConstant.textColor)
+                    .semiBold,
+              ),
+              centerTitle: true,
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                const SizedBox(
+                  height: 16,
                 ),
-              ],
-            );
-          },
+                ...(vm.itemArr.length > 0
+                    ? [
+                        ...vm.itemArr.map(
+                          (e) => Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: CartItem(
+                              cartData: e,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 40,
+                          child: ElevatedButton(
+                            onPressed: () => {},
+                            child: const Text('Xác nhận đặt hàng'),
+                          ),
+                        )
+                      ]
+                    : [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.no_backpack,
+                                  size: 100,
+                                ),
+                                Text(
+                                  'No Record',
+                                  style: TextStyleConstant.normalLargeText,
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ]),
+              ]),
+            ),
+          ],
         ),
       ),
     );
@@ -85,10 +102,13 @@ class CartScreen extends StatelessWidget {
 }
 
 class CartItem extends StatelessWidget {
-  const CartItem({Key? key}) : super(key: key);
+  final dynamic cartData;
+  const CartItem({Key? key, this.cartData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var vm = Provider.of<CartProvider>(context);
+
     return Row(children: [
       Container(
         width: 100,
@@ -96,7 +116,8 @@ class CartItem extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: AssetImage("assets/images/doanvat/gao.jpeg"),
+            image:
+                Utils.imageFromBase64String(cartData['data']['images']).image,
             colorFilter: ColorFilter.mode(
                 Colors.black.withOpacity(0.1), BlendMode.softLight),
           ),
@@ -108,10 +129,14 @@ class CartItem extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 16),
-              child: Text("Bánh gạo da heo siêu ngon",
-                  style: TextStyleConstant.normalLargeText
-                      .setColor(ColorConstant.textColor)
-                      .semiBold),
+              child: Text(
+                cartData['data']['title'],
+                style: TextStyleConstant.normalLargeText
+                    .setColor(ColorConstant.textColor)
+                    .semiBold,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             const SizedBox(
               height: 20,
@@ -120,7 +145,7 @@ class CartItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "${7000.formatCurrency()} đ",
+                  "${(cartData['data']['price'] as int).formatCurrency()} đ",
                   style: TextStyleConstant.normalxxLargeText
                       .setColor(ColorConstant.primaryColor)
                       .semiBold,
@@ -138,16 +163,19 @@ class CartItem extends StatelessWidget {
                           foregroundColor: MaterialStateProperty.all(
                               ColorConstant.textColor),
                         ),
-                        onPressed: () => {},
+                        onPressed: () => {
+                          vm.updateItem(
+                              cartData['data'], cartData['amount'] - 1)
+                        },
                         child: const Icon(
                           Icons.remove,
                           size: 20,
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('1'),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(cartData['amount'].toString()),
                     ),
                     SizedBox(
                       width: 24,
@@ -156,7 +184,10 @@ class CartItem extends StatelessWidget {
                         style: ButtonStyle(
                           padding: MaterialStateProperty.all(EdgeInsets.zero),
                         ),
-                        onPressed: () => {},
+                        onPressed: () => {
+                          vm.updateItem(
+                              cartData['data'], cartData['amount'] + 1)
+                        },
                         child: const Icon(
                           Icons.add,
                           size: 20,

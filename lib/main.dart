@@ -1,3 +1,4 @@
+import 'package:ecommerce_midterm/provider/cart-provider.dart';
 import 'package:ecommerce_midterm/provider/item-provider.dart';
 import 'package:ecommerce_midterm/screens/Auth/login_screen.dart';
 import 'package:ecommerce_midterm/screens/ItemDetail/item_detail.dart';
@@ -40,6 +41,10 @@ void main() async {
     ),
     ChangeNotifierProvider(
       create: (context) => ItemDetailViewModal(),
+      lazy: true,
+    ),
+    ChangeNotifierProvider(
+      create: (context) => CartProvider(),
       lazy: true,
     )
   ], child: const MyApp()));

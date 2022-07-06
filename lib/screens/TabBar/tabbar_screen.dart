@@ -35,7 +35,6 @@ class TabbarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var vm = Provider.of<HomeViewModel>(context);
-    var userVM = Provider.of<UserViewModel>(context);
 
     return SafeArea(
       top: false,

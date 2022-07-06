@@ -1,3 +1,4 @@
+import 'package:ecommerce_midterm/provider/cart-provider.dart';
 import 'package:ecommerce_midterm/utils/color_constant.dart';
 import 'package:ecommerce_midterm/utils/extensions/textstyle_ext.dart';
 import 'package:ecommerce_midterm/utils/text_style_constant.dart';
@@ -14,6 +15,7 @@ class ItemDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var vm = Provider.of<ItemDetailViewModal>(context);
+    var cartVM = Provider.of<CartProvider>(context);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 
@@ -135,7 +137,10 @@ class ItemDetail extends StatelessWidget {
                     width: double.infinity,
                     height: 40,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        cartVM.addItem(vm.data, vm.itemNumber);
+                        Navigator.pop(context);
+                      },
                       child: const Text('Thêm vào giỏ hàng'),
                     ),
                   ),
