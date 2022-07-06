@@ -59,13 +59,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         onTap: () => mainVm.setCategory('do_an_kho'),
                       ),
                       CategoryItem(
-                        icon: IconData(0xe25a, fontFamily: 'MaterialIcons'),
+                        icon:
+                            const IconData(0xe25a, fontFamily: 'MaterialIcons'),
                         name: 'Ăn vặt',
                         isActive: mainVm.selectedCategory == 'do_an_vat',
                         onTap: () => mainVm.setCategory('do_an_vat'),
                       ),
                       CategoryItem(
-                        icon: IconData(0xe22e, fontFamily: 'MaterialIcons'),
+                        icon:
+                            const IconData(0xe22e, fontFamily: 'MaterialIcons'),
                         name: 'Đồ uống',
                         isActive: mainVm.selectedCategory == 'do_uong',
                         onTap: () => mainVm.setCategory('do_uong'),
